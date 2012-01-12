@@ -4,3 +4,5 @@ bin/
 *.class
 .DS_Store?
 *.log
+target
+
