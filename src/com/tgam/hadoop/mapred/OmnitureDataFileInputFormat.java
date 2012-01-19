@@ -1,4 +1,4 @@
-package com.tgam.hadoop;
+package com.tgam.hadoop.mapred;
 
 import java.io.IOException;
 
@@ -14,8 +14,8 @@ import org.apache.hadoop.mapred.TextInputFormat;
 @SuppressWarnings("deprecation")
 /**
  * A custom input format for dealing with Omniture's hit_data.tsv daily data feed files.
- * @author Mike Sukmanowsky
- *
+ * @author Mike Sukmanowsky (<a href="mailto:mike.sukmanowsky@gmail.com">mike.sukmanowsky@gmail.com</a>)
+ * 
  */
 class OmnitureDataFileInputFormat extends TextInputFormat {
 	

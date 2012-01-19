@@ -1,4 +1,4 @@
-package com.tgam.hadoop;
+package com.tgam.hadoop.util;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,7 +7,7 @@ import org.apache.hadoop.io.Text;
 
 /**
  * A class that provides an escaped line reader from an input stream.
- * @author Mike Sukmanowsky
+ * @author Mike Sukmanowsky (<a href="mailto:mike.sukmanowsky@gmail.com">mike.sukmanowsky@gmail.com</a>)
  *
  */
 public class EscapedLineReader {
