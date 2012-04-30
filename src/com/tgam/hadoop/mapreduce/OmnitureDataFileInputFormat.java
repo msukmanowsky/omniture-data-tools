@@ -14,6 +14,7 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
  *
  */
 public class OmnitureDataFileInputFormat extends TextInputFormat {
+	
 	@Override
 	public OmnitureDataFileRecordReader createRecordReader(InputSplit split, TaskAttemptContext tac) {
 		return new OmnitureDataFileRecordReader();

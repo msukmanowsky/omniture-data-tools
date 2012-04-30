@@ -11,7 +11,6 @@ import org.apache.hadoop.mapred.RecordReader;
 import org.apache.hadoop.mapred.Reporter;
 import org.apache.hadoop.mapred.TextInputFormat;
 
-@SuppressWarnings("deprecation")
 /**
  * A custom input format for dealing with Omniture's hit_data.tsv daily data feed files.
  * @author Mike Sukmanowsky (<a href="mailto:mike.sukmanowsky@gmail.com">mike.sukmanowsky@gmail.com</a>)

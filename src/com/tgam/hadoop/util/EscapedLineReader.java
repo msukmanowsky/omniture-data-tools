@@ -27,20 +27,6 @@ public class EscapedLineReader {
 	
 	/**
 	 * Create a multi-line reader that reads from the given stream using the
-	 * default buffer-size (64K).
-	 * @param in The input stream
-	 * @throws IOException
-	 */
-	public EscapedLineReader(InputStream in, byte escapeChar) {
-		this(in, DEFAULT_BUFFER_SIZE, escapeChar);
-	}
-	
-	public EscapedLineReader(InputStream in) {
-		this(in, DEFAULT_BUFFER_SIZE, DEFAULT_ESCAPE_CHARACTER);
-	}
-	
-	/**
-	 * Create a multi-line reader that reads from the given stream using the
 	 * given buffer-size.
 	 * @param in The input stream
 	 * @param bufferSize Size of the read buffer
@@ -51,6 +37,20 @@ public class EscapedLineReader {
 		this.in = in;
 		this.bufferSize = bufferSize;
 		this.buffer = new byte[this.bufferSize];
+	}
+	
+	/**
+	 * Create a multi-line reader that reads from the given stream using the
+	 * default buffer-size (64K).
+	 * @param in The input stream
+	 * @throws IOException
+	 */
+	public EscapedLineReader(InputStream in, byte escapeChar) {
+		this(in, DEFAULT_BUFFER_SIZE, escapeChar);
+	}
+	
+	public EscapedLineReader(InputStream in) {
+		this(in, DEFAULT_BUFFER_SIZE, DEFAULT_ESCAPE_CHARACTER);
 	}
 	
 	/**
@@ -79,9 +79,9 @@ public class EscapedLineReader {
 	/**
 	 * Read one line from the InputStream into the given Text. A line
 	 * can be terminated by one of the following: '\n' (LF), '\r' (CR),
-	 * or '\r\n' (CR+LF).  Will ignore any of these characters if they
-	 * are proceeded by a \ (e.g. \\n).  EOF also terminates an otherwise
-	 * unterminated line.
+	 * or '\r\n' (CR+LF).  Will ignore any of these termination characters 
+	 * if they are proceeded by a designated escape character. EOF also 
+	 * terminates an otherwise unterminated line.
 	 * 
 	 * @param str the object to store the given line (without the newline)
 	 * @param maxLineLength the maximum number of bytes to store into str; 
@@ -114,13 +114,12 @@ public class EscapedLineReader {
 	     * consuming it until we have a chance to look at the char that
 	     * follows.
 	     */
-		
 		str.clear();
 		int txtLength = 0; // tracks str.getLength() as an optimization
 		int newLineLength = 0; // length of the terminating newline
 		boolean prevCharCR = false; // true if prev char was \r
 		long bytesConsumed = 0;
-		
+
 		do {
 			int startPos = bufferPos; // starting from where we left off
 			if (bufferPos >= bufferLength) {
@@ -131,18 +130,22 @@ public class EscapedLineReader {
 			}
 			for (; bufferPos < bufferLength; ++bufferPos) {
 				boolean escaped = false;
-				if (bufferPos > 0) 
-					escaped = buffer[bufferPos-1] == escapeChar;
+				if (prevCharCR && bufferPos > 1)
+					escaped = (buffer[bufferPos-2] == escapeChar);
+				if (!prevCharCR && bufferPos > 0)
+					escaped = (buffer[bufferPos-1] == escapeChar);
+				
 				if (buffer[bufferPos] == LF && !escaped) {
 					newLineLength = prevCharCR ? 2 : 1;
 					++bufferPos; // at next loop proceed from following byte
 					break;
 				}
-				if (prevCharCR) { // CR + notLF, we are at notLF
+				if (prevCharCR && !escaped) { // CR + notLF, we are at notLF
 					newLineLength = 1;
 					break;
 				}
-				prevCharCR = (buffer[bufferPos] == CR && !escaped);
+				prevCharCR = (buffer[bufferPos] == CR);
+				//prevCharCR = (buffer[bufferPos] == CR && !escaped);
 			}
 			int readLength = bufferPos - startPos;
 			if (prevCharCR && newLineLength == 0) 
@@ -157,10 +160,10 @@ public class EscapedLineReader {
 				txtLength += appendLength;
 			}
 		} while (newLineLength == 0 && bytesConsumed < maxBytesToConsume);
-		
+
 		if (bytesConsumed > (long)Integer.MAX_VALUE)
 			throw new IOException("Too many bytes before newline: " + bytesConsumed);
-		
+
 		return (int)bytesConsumed;
 	}
 	

@@ -25,7 +25,9 @@ import com.tgam.hadoop.util.EscapedLineReader;
  *
  */
 public class OmnitureDataFileRecordReader extends RecordReader<LongWritable, Text> {
+	
 	private static final Log LOG = LogFactory.getLog(OmnitureDataFileRecordReader.class);
+	private static final int NUMBER_OF_FIELDS = 227;
 	
 	private int maxLineLength;
 	private long start;
@@ -34,15 +36,14 @@ public class OmnitureDataFileRecordReader extends RecordReader<LongWritable, Tex
 	private CompressionCodecFactory compressionCodecs = null;
 	private EscapedLineReader lineReader;
 	private LongWritable key = null;
-	private Text value = null;
-
+	private Text value = null; 
 
 	@Override
 	public void initialize(InputSplit genericSplit, TaskAttemptContext context)
 			throws IOException, InterruptedException {
 		FileSplit split = (FileSplit) genericSplit;
 		Configuration job = context.getConfiguration();
-		this.maxLineLength = job.getInt("mapred.linerecordreader.maxlength", Integer.MAX_VALUE);
+		this.maxLineLength = job.getInt("mapred.escapedlinereader.maxlength", Integer.MAX_VALUE);
 		this.start = split.getStart();
 		this.end = start + split.getLength();
 		final Path file = split.getPath();
@@ -83,7 +84,7 @@ public class OmnitureDataFileRecordReader extends RecordReader<LongWritable, Tex
 	 * @throws InterruptedException
 	 */
 	public Text getCurrentValue() throws IOException, InterruptedException {
-		return new Text(value.toString().replaceAll("\\\\(\t|\n|\r\n)", " "));
+		return this.value;
 	}
 
 	@Override
@@ -111,6 +112,9 @@ public class OmnitureDataFileRecordReader extends RecordReader<LongWritable, Tex
 	 * @throws InterruptedException
 	 */
 	public boolean nextKeyValue() throws IOException, InterruptedException {
+		String line;
+		String[] fields = new String[1];
+		
 		if (key == null) {
 			key = new LongWritable();
 		}
@@ -120,24 +124,40 @@ public class OmnitureDataFileRecordReader extends RecordReader<LongWritable, Tex
 			value = new Text();
 		}
 		
-		int newSize = 0;
-		while (pos < end) {
-			newSize = lineReader.readLine(value, maxLineLength, Math.max((int)Math.min(Integer.MAX_VALUE, end-pos), maxLineLength));
-			if (newSize == 0) {
+		int bytesRead = 0;
+		// Stay within the split
+		while (pos < end) {			
+			bytesRead = lineReader.readLine(value, maxLineLength, Math.max((int)Math.min(Integer.MAX_VALUE, end - pos), maxLineLength));
+
+			// If we didn't read anything, then we're done
+			if (bytesRead == 0) {
 				break;
 			}
-			value = new Text(value.toString().replaceAll("\\\\(\t|\n|\r\n)", " "));
-			pos += newSize;
-			if (newSize < maxLineLength) {
+			// Modify the line that's returned by the EscapedLineReader so that the tabs won't be an issue to split on
+			// Remember that in Java a \\\\ within a string regex = one backslash
+			line = value.toString().replaceAll("\\\\\t", " ").replaceAll("\\\\(\n|\r|\r\n)", "");
+			fields = line.split("\t", -1);
+			value.set(line);
+			
+			// Move the position marker
+			pos += bytesRead;
+			
+			// Ensure that we didn't read more than we were supposed to and that we don't have a bogus line which should be skipped
+			if (bytesRead < maxLineLength && fields.length == NUMBER_OF_FIELDS) {
 				break;
 			}
 			
-			// Otherwise the line is too long
-			LOG.info("Skipped line of size " + newSize + " at position " + (pos - newSize));
+			if (fields.length != NUMBER_OF_FIELDS) {
+				// TODO: Implement counters to track number of skipped lines, possibly only available via map and reduce functions
+				LOG.warn("Skipped line at position " + (pos - bytesRead) + " with incorrect number of fields (expected "+ NUMBER_OF_FIELDS + " but found " + fields.length + ")");
+			} else {
+				// Otherwise the line is too long and we need to skip this line
+				LOG.warn("Skipped line of size " + bytesRead + " at position " + (pos - bytesRead));
+			}
 		}
 		
 		// Check to see if we actually read a line and return appropriate boolean
-		if (newSize == 0) {
+		if (bytesRead == 0 || fields.length != NUMBER_OF_FIELDS) {
 			key = null;
 			value = null;
 			return false;
