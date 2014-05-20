@@ -23,7 +23,7 @@ To use `OmnitureDataFileInputFormat` in Hive, simply specify it during your crea
 
     CREATE TABLE (...)
     ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' 
-    STORED AS INPUTFORMAT 'com.tgam.hadoop.OmnitureDataFileInputFormat' OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.IgnoreKeyTextOutputFormat';
+    STORED AS INPUTFORMAT 'com.tgam.hadoop.mapred.OmnitureDataFileInputFormat' OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.IgnoreKeyTextOutputFormat';
 
 ## usage in pig
 To use `OmnitureDataFileInputFormat` in a Pig script, you will have to register both the InputFormat as well as the UDF [OmnitureTextLoader](http://github.com/msukmanowsky/OmnitureTextLoader).
