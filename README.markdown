@@ -27,14 +27,14 @@ To use `OmnitureDataFileInputFormat` in Hive, simply specify it during your crea
 
     CREATE TABLE (...)
     ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' 
-    STORED AS INPUTFORMAT 'org.omnituredata.hadoop.OmnitureDataFileInputFormat' OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.IgnoreKeyTextOutputFormat';
+    STORED AS INPUTFORMAT 'org.rassee.omniture.hadoop.OmnitureDataFileInputFormat' OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.IgnoreKeyTextOutputFormat';
 
 ## usage in pig
 ```
-    register 'hdfs://localhost:8020/tmp/omniture-input-format-1.0.0-SNAPSHOT-jar-with-dependencies.jar';
+    register 'hdfs://localhost:8020/tmp/omnituredata-1.0.0-SNAPSHOT-jar-with-dependencies.jar';
     set mapred.create.symlink yes;
     set mapreduce.job.cache.files hdfs://localhost:8020/tmp/gpapermobile-schema.json#gpapermobile-schema.json;
-    a = load '/tmp/gpapermobile' using org.omnituredata.pig.OmnitureDataLoader('gpapermobile-schema.json');
+    a = load '/tmp/gpapermobile' using org.rassee.omniture.pig.OmnitureDataLoader('gpapermobile-schema.json');
     store a into '/tmp/gpapermobile_l1' using AvroStorage();
 ```
 
