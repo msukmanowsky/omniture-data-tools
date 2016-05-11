@@ -34,8 +34,8 @@
         </developer>
     </developers>
     <scm>
-        <connection>https://github.com/msukmanowsky/OmnitureDataFileInputFormat.git</connection>
-        <developerConnection>https://github.com/msukmanowsky/OmnitureDataFileInputFormat.git</developerConnection>
+        <connection>scm:git:git://github.com:msukmanowsky/OmnitureDataFileInputFormat.git</connection>
+        <developerConnection>scm:git:git@github.com:msukmanowsky/OmnitureDataFileInputFormat.git</developerConnection>
         <url>https://github.com/msukmanowsky/OmnitureDataFileInputFormat.git</url>
     </scm>
     <distributionManagement>
