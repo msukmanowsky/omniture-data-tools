@@ -29,7 +29,7 @@
     <groupId>org.rassee</groupId>
     <artifactId>omnituredata</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <name>Omniture Clickstream data parsers and tools</name>
     <url>https://github.com/msukmanowsky/OmnitureDataFileInputFormat.git</url>
     <inceptionYear>2012</inceptionYear>
@@ -61,7 +61,7 @@
         <connection>scm:git:git://github.com:msukmanowsky/OmnitureDataFileInputFormat.git</connection>
         <developerConnection>scm:git:git@github.com:msukmanowsky/OmnitureDataFileInputFormat.git</developerConnection>
         <url>https://github.com/msukmanowsky/OmnitureDataFileInputFormat.git</url>
-      <tag>HEAD</tag>
+      <tag>omnituredata-1.0.1</tag>
   </scm>
     <distributionManagement>
         <snapshotRepository>
