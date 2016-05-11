@@ -5,6 +5,9 @@ A collection tools for Hadoop eco system that makes it easier to parse Omniture 
 
 It supports only the newer `org.apache.hadoop.mapreduce` API.
 
+## License
+https://github.com/msukmanowsky/OmnitureDataFileInputFormat/blob/master/LICENSE
+
 ## Maven
 ```
 <dependency>
