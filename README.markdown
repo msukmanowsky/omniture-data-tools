@@ -77,6 +77,3 @@ If columns are not included in data types, then all columns are treated as "char
 * Add support for more data types
 * Add support for custom schema definition in Hive through table properties
 * Cleanup
-
-# Support
-* [Gannett](http://gannett.com) for time and resources
