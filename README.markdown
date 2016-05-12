@@ -9,11 +9,12 @@ It supports only the newer `org.apache.hadoop.mapreduce` API.
 https://github.com/msukmanowsky/OmnitureDataFileInputFormat/blob/master/LICENSE
 
 ## Maven
+The artifacts are available in maven central repository.
 ```
 <dependency>
   <groupId>org.rassee</groupId>
   <artifactId>omnituredata</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 ## Authors
