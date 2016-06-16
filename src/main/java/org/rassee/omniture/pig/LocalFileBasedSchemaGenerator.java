@@ -50,6 +50,7 @@ public class LocalFileBasedSchemaGenerator extends AbstractSchemaGenerator {
         checkArgument(definition.columnHeaders != null, "Invalid Column Headers");
     }
 
+    @Override
     public Set<String> getLongColumns() {
         if (definition.longColumns != null) {
             return Sets.newHashSet(definition.longColumns);
@@ -57,6 +58,7 @@ public class LocalFileBasedSchemaGenerator extends AbstractSchemaGenerator {
         return Sets.newHashSet();
     }
 
+    @Override
     public Set<String> getDecimalColumns() {
         if (definition.decimalColumns != null) {
             return Sets.newHashSet(definition.decimalColumns);
@@ -64,6 +66,7 @@ public class LocalFileBasedSchemaGenerator extends AbstractSchemaGenerator {
         return Sets.newHashSet();
     }
 
+    @Override
     public Set<String> getTimestampColumns() {
         if (definition.timestampColumns != null) {
             return Sets.newHashSet(definition.timestampColumns);
@@ -71,10 +74,12 @@ public class LocalFileBasedSchemaGenerator extends AbstractSchemaGenerator {
         return Sets.newHashSet();
     }
 
+    @Override
     public String getColumnHeaders() {
         return definition.columnHeaders;
     }
 
+    @Override
     public String getColumnHeadersDelimiter() {
         return definition.columnHeaderDelimiter;
     }

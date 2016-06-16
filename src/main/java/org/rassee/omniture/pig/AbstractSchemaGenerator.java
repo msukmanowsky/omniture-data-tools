@@ -39,8 +39,8 @@ import java.util.Set;
 public abstract class AbstractSchemaGenerator implements SchemaGenerator {
     //A simple Set based lookup that simply defines columns for each data types
     //It is important to use right data type if we know for sure. This offers efficient storage of output in parquet or orc format
-    private final static Set<String> timestampColumns = Sets.newHashSet("date_time");
-    private final static Set<String> longColumns = Sets.newHashSet("browser_height", "browser_width", "search_engine",
+    private static final Set<String> timestampColumns = Sets.newHashSet("date_time");
+    private static final Set<String> longColumns = Sets.newHashSet("browser_height", "browser_width", "search_engine",
             "post_browser_height", "post_browser_width", "browser", "color", "country", "language", "resolution", "visit_search_engine", "geo_dma", "post_search_engine", "search_page_num",
             "click_action_type", "click_context_type", "click_sourceid", "connection_type", "curr_factor",
             "cust_hit_time_gmt", "daily_visitor", "duplicate_purchase", "exclude_hit", "first_hit_time_gmt", "hit_source",
@@ -50,8 +50,8 @@ public abstract class AbstractSchemaGenerator implements SchemaGenerator {
             "post_visid_type", "prev_page", "quarterly_visitor", "ref_type", "secondary_hit",
             "sourceid", "userid", "va_closer_id", "va_finder_id", "va_instance_event", "va_new_engagement",
             "visid_timestamp", "visid_type", "visit_num", "visit_page_num", "visit_start_time_gmt", "weekly_visitor", "yearly_visitor", "os", "user_hash");
-    private final static Set<String> decimalColumns = Sets.newHashSet();
-    private final static Set<String> bagOfStringColumns = Sets.newHashSet();
+    private static final Set<String> decimalColumns = Sets.newHashSet();
+    private static final Set<String> bagOfStringColumns = Sets.newHashSet();
 
     public Set<String> getLongColumns() {
         return longColumns;
