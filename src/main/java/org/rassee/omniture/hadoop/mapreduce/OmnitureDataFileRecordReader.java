@@ -58,10 +58,10 @@ public class OmnitureDataFileRecordReader extends RecordReader<LongWritable, Tex
     private long start;
     private long pos;
     private long end;
-    private CompressionCodecFactory compressionCodecs = null;
+    private CompressionCodecFactory compressionCodecs;
     private EscapedLineReader lineReader;
-    private LongWritable key = null;
-    private Text value = null;
+    private LongWritable key;
+    private Text value;
     private int numberOfFields;
 
     public OmnitureDataFileRecordReader(int numberOfFields) {

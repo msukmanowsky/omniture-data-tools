@@ -60,17 +60,17 @@ import java.util.Properties;
  * @author Mike Sukmanowsky (<a href="mailto:mike.sukmanowsky@gmail.com">mike.sukmanowsky@gmail.com</a>)
  */
 public class OmnitureDataLoader extends LoadFunc implements LoadMetadata {
-    private static Logger logger = LoggerFactory.getLogger(OmnitureDataLoader.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(OmnitureDataLoader.class);
 
     private static final String DATE_TIME_FORMAT = "yyy-MM-dd HH:mm:ss";
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern(DATE_TIME_FORMAT);
     private final String schema;
-    private int fieldCount = 0;
+    private int fieldCount;
 
     private TupleFactory tupleFactory = TupleFactory.getInstance();
     private BagFactory bagFactory = BagFactory.getInstance();
     private OmnitureDataFileRecordReader reader;
-    private String udfcSignature = null;
+    private String udfcSignature;
     private ResourceFieldSchema[] fields;
 
     public OmnitureDataLoader() {
@@ -141,7 +141,7 @@ public class OmnitureDataLoader extends LoadFunc implements LoadMetadata {
         tuple = tupleFactory.newTuple(numberOfTabs + 1);
 
         if (numberOfTabs != fields.length) {
-            logger.error("skipping row - did not find expected tabs in row - expected {}, found {}", fields.length, numberOfTabs);
+            LOGGER.error("skipping row - did not find expected tabs in row - expected {}, found {}", fields.length, numberOfTabs);
         } else {
             int fieldIndex = 0;
             while (valueIterator.hasNext()) {
@@ -196,7 +196,7 @@ public class OmnitureDataLoader extends LoadFunc implements LoadMetadata {
                         }
                         break;
                     case DataType.BAG:
-                        if (field.getName().equals("event_list")) {
+                        if ("event_list".equals(field.getName())) {
                             DataBag bag = bagFactory.newDefaultBag();
                             String[] events = val.split(",");
 

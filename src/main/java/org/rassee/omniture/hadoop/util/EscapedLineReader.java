@@ -43,9 +43,9 @@ public class EscapedLineReader {
     private InputStream in;
     private byte[] buffer;
     // the number of bytes in the real buffer
-    private int bufferLength = 0;
+    private int bufferLength;
     // the current position of the buffer
-    private int bufferPos = 0;
+    private int bufferPos;
     private byte escapeChar;
 
     private static final byte CR = '\r';
