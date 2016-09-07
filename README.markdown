@@ -31,7 +31,8 @@ To use `OmnitureDataFileInputFormat` in Hive, simply specify it during your crea
 
     CREATE TABLE (...)
     ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' 
-    STORED AS INPUTFORMAT 'org.rassee.omniture.hadoop.OmnitureDataFileInputFormat' OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.IgnoreKeyTextOutputFormat';
+    STORED AS INPUTFORMAT 'org.rassee.omniture.hadoop.mapred.OmnitureDataFileInputFormat' 
+    OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.IgnoreKeyTextOutputFormat';
 
 ## usage in pig
 ```
