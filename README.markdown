@@ -26,6 +26,28 @@ The artifacts are available in maven central repository.
 * Keys are `LongWritable` and represent the byte offset of the record in the file.
 * Values are `Text` with all instances of \\t, \\n or \\r\n replaced with a space (so that hive/pig can correctly split the columns)
 
+## usage in Spark (Scala)
+
+After adding the dependency to the project we can:
+
+```
+    import org.rassee.omniture.hadoop.mapred.OmnitureDataFileInputFormat
+    import java.nio.charset.StandardCharsets
+    import org.apache.hadoop.io.{LongWritable, Text}
+    import org.apache.hadoop.mapred.InputFormat
+
+    val rddLines: RDD[String] =
+      sparkSession.sparkContext.hadoopFile(
+        path = path,
+        inputFormatClass = classOf[OmnitureDataFileInputFormat],
+        keyClass = classOf[LongWritable],
+        valueClass = classOf[Text]
+      )
+      .map(_._2.getBytes()).map(new String(_, StandardCharsets.UTF_8))
+```
+
+Then proceed as normal to split the TSV via a library or simply `rddLines.map(_.split("\t", -1).toList)`
+
 ## usage in hive
 To use `OmnitureDataFileInputFormat` in Hive, simply specify it during your create statement.
 
