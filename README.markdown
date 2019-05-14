@@ -43,7 +43,7 @@ After adding the dependency to the project we can:
         keyClass = classOf[LongWritable],
         valueClass = classOf[Text]
       )
-      .map(_._2.getBytes()).map(new String(_, StandardCharsets.UTF_8))
+      .map(_._2.copyBytes()).map(new String(_, StandardCharsets.UTF_8))
 ```
 
 Then proceed as normal to split the TSV via a library or simply `rddLines.map(_.split("\t", -1).toList)`
